@@ -1,0 +1,18 @@
+IDL_FILES := idl/hello.idl
+IDL_ARGS := -language c++11 -alwaysUseStdVector -platform x64Linux3gcc4.8.2 -create typefiles -I idl/ -d src/dds
+
+.PHONY: all
+all compile
+
+configure:
+    $(foreach file, $(IDL_FILES), rtiddsgen $(IDL_ARGS) $(file);)
+    mkdir -p Debug
+    cmake -DCMAKE_BUILD_TYPE=Debug -B Debug
+
+compile:
+    cmake --build Debug
+
+
+.PHONY: clean
+clean:
+    rm -rf Debug Release
